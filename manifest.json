@@ -1,0 +1,15 @@
+{
+  "name": "ProDoctor",
+  "short_name": "ProDoctor",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1f78b4",
+  "theme_color": "#1f78b4",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

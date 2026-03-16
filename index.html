@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <meta name="description" content="ProDoctor: A lightweight doctor & patient record manager with analytics and outcome tracking.">
+    <meta name="theme-color" content="#1f78b4">
+    <meta property="og:title" content="ProDoctor Record Management">
+    <meta property="og:description" content="Track doctor staff and patient outcomes with an animated dashboard.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="favicon.svg">
+    <title>Pro Doctor Record Management</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand__icon">🩺</span>
+            <span class="brand__name">ProDoctor</span>
+        </div>
+
+        <nav class="nav">
+            <button class="nav__link active" data-target="dashboardPage">Dashboard</button>
+            <button class="nav__link" data-target="patientsPage">Patients</button>
+            <button class="nav__link" data-target="successfulPage">Successful</button>
+            <button class="nav__link" data-target="ongoingPage">Ongoing</button>
+            <button class="nav__link" data-target="unsuccessfulPage">Unsuccessful</button>
+            <button class="nav__link" data-target="addPage">Add Doctor</button>
+            <button class="nav__link" data-target="aboutPage">About</button>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section id="dashboardPage" class="page active">
+            <div class="container">
+                <h1>Medical Staff Dashboard</h1>
+                <p class="subheading">Review and manage registered doctor & patient records.</p>
+
+                <div class="dashboard-row">
+                    <div class="stat-card">
+                        <h3>Total Doctors</h3>
+                        <p id="doctorCount" class="stat-value">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Total Patients</h3>
+                        <p id="patientCount" class="stat-value">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Successful Treatments</h3>
+                        <p id="successCount" class="stat-value">0</p>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h2>Treatment Outcomes</h2>
+                    <canvas id="outcomeChart" height="140"></canvas>
+                </div>
+
+                <div class="table-section">
+                    <h2>Current Medical Staff</h2>
+                    <table id="recordTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Specialty</th>
+                                <th>Contact</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="patientsPage" class="page">
+            <div class="container">
+                <h1>Patient Registry</h1>
+                <p class="subheading">Track patient admissions and treatment outcomes.</p>
+
+                <div class="form-section">
+                    <h2>Register New Patient</h2>
+                    <form id="patientForm">
+                        <input type="text" id="patientName" placeholder="Patient's Full Name" required>
+                        <input type="number" id="patientAge" placeholder="Age" required min="0">
+                        <input type="text" id="patientCondition" placeholder="Condition / Procedure" required>
+                        <select id="patientOutcome" required>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="successful">Successful</option>
+                            <option value="unsuccessful">Unsuccessful</option>
+                        </select>
+                        <button type="submit">Save Patient</button>
+                    </form>
+                    <p id="patientStatusMessage"></p>
+                </div>
+
+                <div class="table-section">
+                    <h2>Patient List</h2>
+                    <table id="patientTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Condition</th>
+                                <th>Outcome</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="successfulPage" class="page">
+            <div class="container">
+                <h1>Successful Treatments</h1>
+                <p class="subheading">Review the cases that completed successfully.</p>
+
+                <div class="form-section">
+                    <h2>Add a Successful Case</h2>
+                    <form id="successfulForm" data-outcome="successful">
+                        <input type="text" name="name" placeholder="Patient's Full Name" required>
+                        <input type="number" name="age" placeholder="Age" required min="0">
+                        <input type="text" name="condition" placeholder="Condition / Procedure" required>
+                        <button type="submit">Log as Successful</button>
+                    </form>
+                </div>
+
+                <div class="table-section">
+                    <h2>Successful Patients</h2>
+                    <table id="successfulTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Condition</th>
+                                <th>Outcome</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="successfulTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="ongoingPage" class="page">
+            <div class="container">
+                <h1>Ongoing Treatments</h1>
+                <p class="subheading">Track patients whose treatment is still in progress.</p>
+
+                <div class="form-section">
+                    <h2>Add an Ongoing Case</h2>
+                    <form id="ongoingForm" data-outcome="ongoing">
+                        <input type="text" name="name" placeholder="Patient's Full Name" required>
+                        <input type="number" name="age" placeholder="Age" required min="0">
+                        <input type="text" name="condition" placeholder="Condition / Procedure" required>
+                        <button type="submit">Log as Ongoing</button>
+                    </form>
+                </div>
+
+                <div class="table-section">
+                    <h2>Ongoing Patients</h2>
+                    <table id="ongoingTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Condition</th>
+                                <th>Outcome</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ongoingTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="unsuccessfulPage" class="page">
+            <div class="container">
+                <h1>Unsuccessful Treatments</h1>
+                <p class="subheading">Review cases that were unable to complete successfully.</p>
+
+                <div class="form-section">
+                    <h2>Add an Unsuccessful Case</h2>
+                    <form id="unsuccessfulForm" data-outcome="unsuccessful">
+                        <input type="text" name="name" placeholder="Patient's Full Name" required>
+                        <input type="number" name="age" placeholder="Age" required min="0">
+                        <input type="text" name="condition" placeholder="Condition / Procedure" required>
+                        <button type="submit">Log as Unsuccessful</button>
+                    </form>
+                </div>
+
+                <div class="table-section">
+                    <h2>Unsuccessful Patients</h2>
+                    <table id="unsuccessfulTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Condition</th>
+                                <th>Outcome</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unsuccessfulTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="addPage" class="page">
+            <div class="container">
+                <h1>Add New Doctor</h1>
+                <p class="subheading">Quickly add a new staff member to your database.</p>
+                <div class="form-section">
+                    <h2>Register New Doctor</h2>
+                    <form id="doctorForm">
+                        <input type="text" id="docName" placeholder="Doctor's Full Name" required>
+                        <input type="text" id="docSpecialty" placeholder="Specialty (e.g., Neurologist)" required>
+                        <input type="text" id="docContact" placeholder="Contact Number" required>
+                        <button type="submit">Save to Database</button>
+                    </form>
+                    <p id="statusMessage"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="aboutPage" class="page">
+            <div class="container">
+                <h1>About ProDoctor</h1>
+                <p class="subheading">A lightweight local doctor record manager with smooth animations.</p>
+                <p>ProDoctor keeps your data safe in your browser using local storage, so you can manage your medical team without a backend.</p>
+                <ul>
+                    <li>Fast UI with animated transitions</li>
+                    <li>Local persistence (no server required)</li>
+                    <li>Simple, clean layout optimized for quick data entry</li>
+                </ul>
+                <p class="tip">Tip: Use the Dashboard to see records, or switch to Add Doctor to enter new staff.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

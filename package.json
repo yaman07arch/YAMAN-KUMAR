@@ -1,0 +1,17 @@
+{
+  "name": "prodoctor",
+  "version": "1.0.0",
+  "description": "ProDoctor - Simple doctor and patient record manager with animated dashboard.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["doctor", "patient", "records", "dashboard"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^7.8.0"
+  }
+}
