@@ -224,7 +224,13 @@ function refreshOutcomePage(outcome, bodyEl, emptyMessage) {
 }
 
 function capitalize(value) {
+    if (!value) return '';
     return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function sanitizeInput(input) {
+    if (!input) return '';
+    return input.trim().replace(/[<>\"']/g, '');
 }
 
 function refreshActivePage() {
@@ -259,9 +265,9 @@ function deletePatient(index) {
 doctorForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const name = document.getElementById('docName').value.trim();
-    const specialty = document.getElementById('docSpecialty').value.trim();
-    const contact = document.getElementById('docContact').value.trim();
+    const name = sanitizeInput(document.getElementById('docName').value);
+    const specialty = sanitizeInput(document.getElementById('docSpecialty').value);
+    const contact = sanitizeInput(document.getElementById('docContact').value);
 
     if (!name || !specialty || !contact) {
         showStatus('Please fill in all fields.', true);
@@ -283,13 +289,13 @@ doctorForm.addEventListener('submit', function (e) {
 patientForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const name = document.getElementById('patientName').value.trim();
+    const name = sanitizeInput(document.getElementById('patientName').value);
     const age = parseInt(document.getElementById('patientAge').value, 10);
-    const condition = document.getElementById('patientCondition').value.trim();
+    const condition = sanitizeInput(document.getElementById('patientCondition').value);
     const outcome = document.getElementById('patientOutcome').value;
 
-    if (!name || !age || !condition) {
-        showStatus('Please fill in all fields.', true, patientStatusMessage);
+    if (!name || isNaN(age) || age <= 0 || !condition) {
+        showStatus('Please fill in all fields with valid data.', true, patientStatusMessage);
         return;
     }
 
@@ -313,12 +319,12 @@ function setupOutcomePageForm(formId) {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const name = form.elements.name.value.trim();
+        const name = sanitizeInput(form.elements.name.value);
         const age = parseInt(form.elements.age.value, 10);
-        const condition = form.elements.condition.value.trim();
+        const condition = sanitizeInput(form.elements.condition.value);
 
-        if (!name || !age || !condition) {
-            showStatus('Please fill in all fields.', true, patientStatusMessage);
+        if (!name || isNaN(age) || age <= 0 || !condition) {
+            showStatus('Please fill in all fields with valid data.', true, patientStatusMessage);
             return;
         }
 
